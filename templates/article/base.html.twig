@@ -10,9 +10,16 @@
                 <div class="container">
                     <div class="row ">
                         {% for art in arts %}
+                            {% set imagefile = "" %}
+
                             <div class="col-md-3">
                                 <div class="card mb-3">
                                     <div style="padding: 6px">
+                                        <a href="{{ path('show_art', {'slug' : art.slug}) }}">
+                                            {% for image in art.images|slice(0, 1) %}
+                                                <img src="/uploads/{{ image.name }}" style="max-width: 100%; max-height: 100%">
+                                            {% endfor %}
+                                        </a>
                                         <a style="color : lightgrey" href="{{ path('show_art', {'slug' : art.slug}) }}">
                                             {{ art.name }}
                                         </a>

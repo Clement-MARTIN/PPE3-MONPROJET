@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} - Editer un article{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="container mt-5 bg-light" style="border-radius: 0.5rem">
+        <h2 class="mt-3">Editer votre article</h2>
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(form.name) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.prix) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.fraisDePort) }}
+            </div>
+            <div class="col-md-12">
+                {{ form_row(form.description) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_row(form.quantite) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.origine) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.idCat) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.images) }}
+            </div>
+            {% if app.request.attributes.get('_route') == 'editArticle' %}
+                <h2 class="mt-3">Les images actuelle de l'article</h2>
+                <div class="row">
+                    {% for image in art.images %}
+                        <div class="col-md-3">
+                            <a href='#modalSuppressionImage' data-toggle='modal'
+                               data-message2='Voulez vous supprimer cette image ?'
+                               data-suppression2="{{ path('annonces_delete_image',{'id':image.id}) }}" class='btn btn-danger'>Supprimer l'image
+                                <div class="card text-white bg-primary mb-3" style="max-width: 20rem;padding: 6px">
+                                    <img src="{{ asset('/uploads/'~image.name) }}" width="150">
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-success mb-3 ">Editer l'article</button>
+    </div>
+
+    {{ form_end(form) }}
+
+    <div id="modalSuppressionImage" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Supprimer l'image</h5>
+                    <button type="button" class="btn btn-dark" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Etes vous sur de vouloir supprimer cette image ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <a href="" class="btn btn-warning" id="btnSuppr"> Supprimer </a></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('a[data-suppression2]').click(function () {
+            var lien = $(this).attr("data-suppression2"); // recupère le lien du boutton "poubelle"
+            console.log(lien);
+            var message = $(this).attr("data-message2"); // recupère le lien du boutton "poubelle"
+            $("#btnSuppr").attr("href", lien); // on écrit ce lien sur le bouton "supprimer"
+            $(".modal-body").text(message)
+        });
+    </script>
+{% endblock %}

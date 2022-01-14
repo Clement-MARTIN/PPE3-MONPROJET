@@ -15,9 +15,9 @@
 
   </head>
   <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{{path('homepage')}}">KNC-Market</a>
+      <a class="navbar-brand" href="{{path('homepage')}}">TIN-Market</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -31,10 +31,10 @@
             </a>
           </li>
           
-          <form id="formRecherche" action=""  class="border border-primary">
+          <form id="formRecherche" action="">
               <div class="row">
                   <div class="col-md-7">
-                      <select name="categorie" class="form-control">
+                      <select name="categorie" class="form-select">
                         <option value='all'>Toutes les catégories</option>
                         {% for cat in cats %}
                             <option value="{{cat.nameCat}}">{{cat.nameCat}}</option>
@@ -68,7 +68,7 @@
                           <li><a href="{{ path('commande') }}" class="dropdown-item" type="button" style="text-transform: uppercase;font-variant:all-small-caps">mes commandes</a></li>
                       {% endif %}
                       {% if is_granted('ROLE_VENDEUR') %}
-                          <li><a href="{{ path('commande') }}" class="dropdown-item" type="button" style="text-transform: uppercase;font-variant:all-small-caps">ajouter un article</a></li>
+                          <li><a href="{{ path('me_article') }}" class="dropdown-item" type="button" style="text-transform: uppercase;font-variant:all-small-caps">ajouter un article</a></li>
                           <li><a href="{{ path('commande') }}" class="dropdown-item" type="button" style="text-transform: uppercase;font-variant:all-small-caps">mes articles</a></li>
                       {% endif %}
                       <li><hr class="dropdown-divider"></li>

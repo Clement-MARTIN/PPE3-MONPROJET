@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ArticleRepository;
 use Symfony\Component\HttpFoundation\File\File;
@@ -21,22 +23,6 @@ class Article
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * Undocumented variable
-     *
-     * @var string|null
-     * @ORM\Column(type="string", length=255)
-     */
-    private $filename;
-
-    /**
-     * Undocumented variable
-     *
-     * @Vich\UploadableField(mapping="article_image", fileNameProperty="filename")
-     * @var File|null
-     */
-    private $imageFile;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -69,11 +55,6 @@ class Article
     private $origine;
 
     /**
-     * @ORM\Column(type="float")
-     */
-    private $note;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="articles")
      */
     private $idCat;
@@ -84,9 +65,19 @@ class Article
     private $slug;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\OneToMany(targetEntity=Images::class, mappedBy="annonces",cascade={"persist"})
      */
-    private $updated_at;
+    private $images;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
+     */
+    private $vendeur;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
 
 
     /**
@@ -95,8 +86,9 @@ class Article
      * @ORM\PrePersist
      * @ORM\PreUpdate
      */
-    public function initializeSlug(){
-        if (empty($this->slug)){
+    public function initializeSlug()
+    {
+        if (empty($this->slug)) {
             $slugify = new Slugify();
             $this->slug = $slugify->slugify($this->name);
         }
@@ -191,18 +183,6 @@ class Article
         return $this;
     }
 
-    public function getNote(): ?float
-    {
-        return $this->note;
-    }
-
-    public function setNote(float $note): self
-    {
-        $this->note = $note;
-
-        return $this;
-    }
-
     public function getIdCat(): ?Categorie
     {
         return $this->idCat;
@@ -215,67 +195,45 @@ class Article
         return $this;
     }
 
-    
-
     /**
-     * Get undocumented variable
-     *
-     * @return  File|null
-     */ 
-    public function getImageFile()
+     * @return Collection|Images[]
+     */
+    public function getImages(): Collection
     {
-        return $this->imageFile;
+        return $this->images;
     }
 
-    /**
-     * Set undocumented variable
-     *
-     * @param  File|null  $imageFile  Undocumented variable
-     *
-     * @return  self
-     */ 
-    public function setImageFile($imageFile)
+    public function addImage(Images $image): self
     {
-        $this->imageFile = $imageFile;
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setAnnonces($this);
+        }
 
         return $this;
     }
 
-    /**
-     * Get undocumented variable
-     *
-     * @return  string|null
-     */ 
-    public function getFilename()
+    public function removeImage(Images $image): self
     {
-        return $this->filename;
-    }
-
-    /**
-     * Set undocumented variable
-     *
-     * @param  string|null  $filename  Undocumented variable
-     *
-     * @return  self
-     */ 
-    public function setFilename($filename)
-    {
-        $this->filename = $filename;
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getAnnonces() === $this) {
+                $image->setAnnonces(null);
+            }
+        }
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getVendeur(): ?User
     {
-        return $this->updated_at;
+        return $this->vendeur;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    public function setVendeur(?User $vendeur): self
     {
-        $this->updated_at = $updated_at;
+        $this->vendeur = $vendeur;
 
         return $this;
     }
-
-   
 }

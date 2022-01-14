@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220101183649 extends AbstractMigration
+final class Version20220114152955 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,16 +20,12 @@ final class Version20220101183649 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE achat DROP FOREIGN KEY FK_26A98456AFF7852');
-        $this->addSql('DROP INDEX IDX_26A98456AFF7852 ON achat');
-        $this->addSql('ALTER TABLE achat DROP id_achateur_id');
+        $this->addSql('ALTER TABLE article DROP filename');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE achat ADD id_achateur_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE achat ADD CONSTRAINT FK_26A98456AFF7852 FOREIGN KEY (id_achateur_id) REFERENCES user (id)');
-        $this->addSql('CREATE INDEX IDX_26A98456AFF7852 ON achat (id_achateur_id)');
+        $this->addSql('ALTER TABLE article ADD filename VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`');
     }
 }

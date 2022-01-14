@@ -72,10 +72,16 @@ class User implements UserInterface
      */
     private $achats;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="vendeur")
+     */
+    private $articles;
+
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
         $this->achats = new ArrayCollection();
+        $this->articles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -293,6 +299,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($achat->getIdAchateur() === $this) {
                 $achat->setIdAchateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->setVendeur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): self
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getVendeur() === $this) {
+                $article->setVendeur(null);
             }
         }
 

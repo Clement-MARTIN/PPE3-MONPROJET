@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Image;
+use App\Entity\Images;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Image|null find($id, $lockMode = null, $lockVersion = null)
- * @method Image|null findOneBy(array $criteria, array $orderBy = null)
- * @method Image[]    findAll()
- * @method Image[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Images|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Images|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Images[]    findAll()
+ * @method Images[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImageRepository extends ServiceEntityRepository
+class ImagesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Image::class);
+        parent::__construct($registry, Images::class);
     }
 
     // /**
-    //  * @return Image[] Returns an array of Image objects
+    //  * @return Images[] Returns an array of Images objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ImageRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Image
+    public function findOneBySomeField($value): ?Images
     {
         return $this->createQueryBuilder('i')
             ->andWhere('i.exampleField = :val')
