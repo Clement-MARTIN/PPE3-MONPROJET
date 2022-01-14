@@ -1,0 +1,58 @@
+{% extends 'base.html.twig'%}
+
+{% block title %}
+    {{art.name}}
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="test">
+                    <p><strong>Image à mettre ici</strong></p>
+                    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner mt-4">
+                            <div class="carousel-item active">
+                                <img src="https://creerunblog.net/wp-content/uploads/2021/06/random_1623344964.jpg" style=" max-width: 300px; height: 200px" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://img.bestdealplus.com/ae04/kf/Hb734e2023bf245e4a6a45333358e30f1p.jpg" style=" max-width: 300px; height: 200px" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="..." class="d-block w-100" alt="...">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mt-4">
+                   <p><u><strong>{{ art.name }} </u>provenant de {{ art.origine }}</strong></p>
+                </div>
+                <div class="mt-2">
+                    <p><strong>Description</strong> <br> {{ art.description }}</p>
+                </div>
+                <div class="mt-4">
+                   <p><strong>Prix de l'article :&nbsp;</strong>{{ art.prix }}&euro;</p>
+                </div>
+                <div class="mt-4">
+                   <p><strong>Catégorie de l'article : </strong><br>{{ art.idCat.nameCat }}</p>
+                </div>
+                <div class="mt-4">
+                   <p><strong>En stock :</strong><br>{{ art.quantite }} disponible(s)</p>
+                </div>
+                <div class="mt-4">
+                   <p><strong>Noté :</strong><br>{{ art.note }} sur 5</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

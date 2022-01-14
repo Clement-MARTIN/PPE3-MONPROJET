@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} - Information personnel{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 bg-light" style="border-radius: 0.5rem">
+        <div class="row">
+            <h2 class="title mt-3 text-decoration-underline" style="text-align: center;">PARAMÈTRES GÉNÉRAUX</h2>
+            <p>Gérez les informations de compte que vous avez partagées avec KNC-Marcket, dont votre nom, prénom,
+                adresse,
+                âge...</p>
+            <hr>
+            {{ form_start(form) }}
+            <h3 class="title text-decoration-underline">Information du compte</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <p style="color: #e74c3c; margin: 0 !important; ">Information non modifiable*</p>
+                    <div class="card border-danger mb-3" style="background-color: #FFFFFF">
+                        <div class="card-body" style="color:#e74c3c; padding: 0.375rem 0.75rem;">
+                            {{ users.email }}
+                        </div>
+                    </div>
+                    {{ form_row(form.password) }}
+                    <p style="color: #e74c3c; margin: 0 !important; ">Vous devez saisir votre mot de passe ! <strong>ATTENTION AU FAUTE DE FRAPPE</strong></p>
+                </div>
+                <div class="col-md-6">
+                    <div class="card text-white bg-dark">
+                        {% if is_granted('ROLE_ACHETEUR') %}
+                            <h3 class="card-header" style="text-align:center">Votre rôle : Acheteur</h3>
+                        {% endif %}
+                        {% if is_granted('ROLE_VENDEUR') %}
+                            <h3 class="card-header" style="text-align:center">Votre rôle : Vendeur</h3>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <h3 class="card-header" style="text-align:center">Votre rôle : Admin</h3>
+                        {% endif %}
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {% if is_granted('ROLE_ACHETEUR') %}
+                                        <img src="/images-type/acheteur.png" style="width: 100%">
+                                    {% endif %}
+                                    {% if is_granted('ROLE_VENDEUR') %}
+                                        <img src="/images-type/vendeur.png" style="width: 100%">
+                                    {% endif %}
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <img src="/images-type/admin.png" style="width: 100%">
+                                    {% endif %}
+                                </div>
+                                {% if is_granted('ROLE_VENDEUR') %}
+                                    <div class="col-md-9">
+                                        <h4>Vendeur :</h4>
+                                        <p>Vous êtes vendeur, vous pouvez <strong><u>uniquement</u></strong> vendre des
+                                            articles
+                                            en tous genres, au prix souhaité, le site prend une commission de 5%."</p>
+                                    </div>
+                                {% endif %}
+                                {% if is_granted('ROLE_ACHETEUR') %}
+                                    <div class="col-md-9">
+                                        <h4>Acheteur :</h4>
+                                        <p>Vous êtes, acheteur vous pouvez <strong><u>uniquement</u></strong> acheter
+                                            des articles se trouvant sur le site, du moment où ces derniers sont
+                                            disponibles en vente.</p>
+                                    </div>
+                                {% endif %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <div class="col-md-9">
+                                        <h4>Admin :</h4>
+                                        <p>Vous êtes, adminsitrateur vous pouvez avoir accès à la liste de tous les
+                                            utilisateurs, et les supprimer.</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <h4 class="title">Information personnelle</h4>
+            <div class="row">
+                <div class="col-md-5">
+                    {{ form_row(form.nom) }}
+                </div>
+                <div class="col-md-5">
+                    {{ form_row(form.prenom) }}
+                </div>
+                <div class="col-md-2">
+                    {{ form_row(form.age) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.adresse) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.phone) }}
+                </div>
+            </div>
+            <div class="col-md-6 mt-3 mb-3">
+                <button type="submit" class="btn btn-success mt-3 ">Modifier votre compte</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

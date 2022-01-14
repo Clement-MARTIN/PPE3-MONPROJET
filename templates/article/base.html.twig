@@ -1,0 +1,29 @@
+{% extends 'base.html.twig'%}
+
+{% block title%}
+    Liste des articles
+{% endblock %}
+
+{% block body %}
+        <div class="row" style="margin : 1rem">
+            <div class="col-md-10">
+                <div class="container">
+                    <div class="row ">
+                        {% for art in arts %}
+                            <div class="col-md-3">
+                                <div class="card mb-3">
+                                    <div style="padding: 6px">
+                                        <a style="color : lightgrey" href="{{ path('show_art', {'slug' : art.slug}) }}">
+                                            {{ art.name }}
+                                        </a>
+                                        <p>{{ art.prix }} €</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

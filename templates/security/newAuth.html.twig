@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} - Inscription{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2 class="mt-3">Créer votre compte</h2>
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-5 mt-2">
+                {{ form_row(form.nom) }}
+            </div>
+            <div class="col-md-5 mt-2">
+                {{ form_row(form.prenom) }}
+            </div>
+            <div class="col-md-2 mt-2">
+                {{ form_row(form.age) }}
+            </div>
+            <div class="col-md-6 mt-2">
+                {{ form_row(form.email) }}
+            </div>
+            <div class="col-md-6 mt-2">
+                {{ form_row(form.password) }}
+            </div>
+            <div class="col-md-6 mt-2">
+                {{ form_row(form.adresse) }}
+            </div>
+            <div class="col-md-6 mt-2">
+                {{ form_row(form.phone) }}
+            </div>
+            <div class="col-md-6 mt-3">
+                <div class="card text-white bg-light">
+                    <h3 class="card-header" style="text-align:center">Acheteur</h3>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img src="/images-type/acheteur.png" style="width: 100%">
+                            </div>
+                            <div class="col-md-9">
+                                <h4>Acheteur :</h4>
+                                <p>En devenant acheteur vous pouvez <strong><u>uniquement</u></strong> acheter
+                                    des articles se trouvant sur le site, du moment où ces derniers sont
+                                    disponibles en vente.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mt-3">
+                <div class="card text-white bg-light">
+                    <h3 class="card-header" style="text-align:center">Vendeur</h3>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img src="/images-type/vendeur.png" style="width: 100%">
+                            </div>
+                            <div class="col-md-9">
+                                <h4>Vendeur :</h4>
+                                <p>En devenant vendeur vous pouvez <strong><u>uniquement</u></strong> vendre des articles
+                                    en tous genres, au prix souhaité, le site prend une commission de 5%."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mt-2">
+                {{ form_row(form.roles) }}
+            </div>
+            <div class="col-md-6 mt-3">
+                <button type="submit" class="btn btn-success mt-3 ">Créer votre compte</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+
+{% endblock %}

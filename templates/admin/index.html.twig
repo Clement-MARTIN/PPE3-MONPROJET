@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} - Liste des utilisateurs{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+                <th scope="col">Adresse</th>
+                <th scope="col">Age</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr class="table-info">
+                    <td>{{ user.nom }}</td>
+                    <td>{{ user.prenom }}</td>
+                    <td>{{ user.email }}</td>
+                    {% if user.roles.0 == "ROLE_ADMIN" %}
+                        <td>Administrateur</td>
+                    {% elseif user.roles.0 == "ROLE_ACHETEUR"%}
+                        <td>Acheteur</td>
+                    {% else %}
+                        <td>Vendeur</td>
+                    {% endif %}
+                    <td>{{ user.adresse }}</td>
+                    <td>{{ user.age }} ans</td>
+                    <td><a href='#modalSuppression' data-toggle='modal'
+                           data-message='Voulez vous supprimer cet utilisateur ?'
+                           data-suppression="{{ path('user_delete',{'id':user.id}) }}" class='btn btn-danger'><i
+                                    class="fa fa-user-minus"></i></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="modalSuppression" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Supprimer le contact</h5>
+                    <button type="button" class="btn btn-dark" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Etes vous sur de vouloir supprimer ce contact ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <a href="" class="btn btn-warning" id="btnSuppr"> Supprimer </a></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://kit.fontawesome.com/45e38e596f.js" crossorigin="anonymous"></script>
+{% endblock %}
