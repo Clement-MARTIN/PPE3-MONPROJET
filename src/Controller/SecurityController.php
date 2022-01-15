@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Panier;
 use App\Entity\User;
 use App\Form\EditionType;
 use App\Form\InscriptionType;
 use App\Form\NewContactType;
+use App\Form\PanierType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use phpDocumentor\Reflection\Types\Resource_;
@@ -91,12 +93,17 @@ class SecurityController extends AbstractController
             $password = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
             $manager->persist($user);
+            $panier = new Panier();
+            $form = $this->createForm(PanierType::class, $panier);
+            $panier->setUser($user);
+            $form->handleRequest($request);
+            $manager->persist($panier);
             $manager->flush();
             $this->addFlash(
                 'success',
                 "L'utilisateur <strong>{$user->getEmail()}</strong> a bien été enregistré"
             );
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('app_login');
         }
         return $this->render('security/newAuth.html.twig',
             [

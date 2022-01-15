@@ -19,7 +19,6 @@ class CommandeController extends AbstractController
         $user = $this->getUser();
         $coms = $repo->listCommande($user);
 
-
         return $this->render("commande/index.html.twig", [
             'coms' => $coms,
         ]);

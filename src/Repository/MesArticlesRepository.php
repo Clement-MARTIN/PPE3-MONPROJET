@@ -2,49 +2,47 @@
 
 namespace App\Repository;
 
-use App\Entity\Article;
+use App\Entity\MesArticles;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @method Article|null find($id, $lockMode = null, $lockVersion = null)
- * @method Article|null findOneBy(array $criteria, array $orderBy = null)
- * @method Article[]    findAll()
- * @method Article[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method MesArticles|null find($id, $lockMode = null, $lockVersion = null)
+ * @method MesArticles|null findOneBy(array $criteria, array $orderBy = null)
+ * @method MesArticles[]    findAll()
+ * @method MesArticles[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ArticleRepository extends ServiceEntityRepository
+class MesArticlesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Article::class);
+        parent::__construct($registry, MesArticles::class);
     }
 
 
     /**
      *
      */
-    public function listDesArticle(UserInterface $user, $id): array
+    public function listPanier(UserInterface $user): array
     {
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
             "SELECT a
-                    from App\Entity\Article a
-                    inner join App\Entity\MesArticles MesA
+                    from App\Entity\MesArticles a
                     inner join App\Entity\Panier p
-                    WHERE a.id = MesA.numArticle
-                    AND p.id = :IDPANIER
-                    AND p.user =  :idUSER"
-        )->setParameter('idUSER', $user->getId())
-            ->setParameter('IDPANIER', $id);
+                    WHERE p.id = a.panier
+                    AND p.user =  :idUSER
+                    ORDER BY a.numArticle"
+        )->setParameter('idUSER', $user->getId());
 
         // returns an array of Product objects
         return $query->getResult();
     }
 
     // /**
-    //  * @return Article[] Returns an array of Article objects
+    //  * @return Achat[] Returns an array of Achat objects
     //  */
     /*
     public function findByExampleField($value)
@@ -61,7 +59,7 @@ class ArticleRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Article
+    public function findOneBySomeField($value): ?Achat
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.exampleField = :val')
