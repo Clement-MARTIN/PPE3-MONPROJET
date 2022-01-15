@@ -3,25 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\Achat;
-use App\Entity\Article;
 use App\Entity\Commande;
 use App\Entity\MesArticles;
+use App\Entity\Panier;
+use App\Form\AjoutPanierType;
 use App\Form\NewAchatType;
-use App\Form\NewArticleType;
 use App\Form\NewCommandeType;
 use App\Repository\ArticleRepository;
-use App\Repository\CommandeRepository;
 use App\Repository\MesArticlesRepository;
 use App\Repository\PanierRepository;
-use Cassandra\Date;
-use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 class PanierController extends AbstractController
 {
@@ -37,6 +33,30 @@ class PanierController extends AbstractController
 
         return $this->render("panier/index.html.twig", [
             'panier' => $panier,
+        ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_ACHETEUR")
+     * @Route("/me/panier/ajout/{id}", name="ajout_article")
+     */
+    public function ajout($id, ArticleRepository $repoA, Request $request, EntityManagerInterface $manager, PanierRepository $repo): Response
+    {
+        $user = $this->getUser();
+        $article = $repoA->findOneById($id);
+        $liste = new MesArticles();
+        $form = $this->createForm(AjoutPanierType::class, $liste);
+        $pani = $repo->findOneBy(['user' =>  $user->getId()]);
+        $liste->setPanier($pani);
+        $liste->setQuantite($article->getQuantite());
+        $liste->setNumArticle($article);
+        $form->handleRequest($request);
+        $manager->persist($liste);
+
+        $manager->flush();
+
+        return $this->redirectToRoute('show_art',[
+            'slug' => $article->getSlug()
         ]);
     }
 
@@ -61,7 +81,8 @@ class PanierController extends AbstractController
             $achat = new Achat();
             $form = $this->createForm(NewAchatType::class, $achat);
             $achat->setCommande($commande);
-            $achat->setNumArticle($pan);
+            $idArticle = $repo->findOneById($pan->getId());
+            $achat->setNumArticle($idArticle);
             $achat->setQuantite( $listeArticle[$i]->getQuantite());
             $form->handleRequest($request);
             $manager->persist($achat);
@@ -75,7 +96,7 @@ class PanierController extends AbstractController
             "Votre commande a bien été passée"
         );
 
-        return $this->render("panier/index.html.twig", ['panier' => $panier = null]);
+        return $this->redirectToRoute('commande');
     }
 
 }

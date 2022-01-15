@@ -29,12 +29,12 @@ class ArticleRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            "SELECT a
-                    from App\Entity\Article a
+            "SELECT MesA
+                    from App\Entity\Article a  
                     inner join App\Entity\MesArticles MesA
                     inner join App\Entity\Panier p
-                    WHERE a.id = MesA.numArticle
-                    AND p.id = :IDPANIER
+                    WHERE MesA.numArticle = a.id
+                    AND MesA.panier = :IDPANIER
                     AND p.user =  :idUSER"
         )->setParameter('idUSER', $user->getId())
             ->setParameter('IDPANIER', $id);

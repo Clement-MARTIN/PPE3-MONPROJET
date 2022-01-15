@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Images;
+use App\Form\AjoutPanierType;
 use App\Form\EditArticleType;
+use App\Form\InscriptionType;
 use App\Form\NewArticleType;
 use App\Repository\ImagesRepository;
 use Cocur\Slugify\Slugify;
@@ -131,8 +133,11 @@ class ArticleController extends AbstractController
      */
     public function show(Article $art): Response
     {
+        $form = $this->createForm(AjoutPanierType::class);
+
         return $this->render('article/showArt.html.twig',[
-            'art' => $art
+            'art' => $art,
+            'form' => $form->createView()
         ]);
     }
 

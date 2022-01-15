@@ -58,14 +58,47 @@
                     <div class="col-md-8">
                     </div>
                     <div class="col-md-4">
-                        <a>
-                            <button class="btn btn-success">
-                                <img src="https://img.icons8.com/color/50/000000/shopping-basket.png"/> Ajouteur au panier
-                            </button>
+                        <a href='#data-suppression' data-toggle='modal'
+                           data-message='Voulez vous ajouter cet article ?'
+                           data-suppression="{{ path('ajout_article',{'id' : art.id}) }}" class='btn btn-success'>
+                            <img src="https://img.icons8.com/color/50/000000/shopping-basket.png"/> Ajouteur au panier
                         </a>
+
                     </div>
                 {% endif %}
             {% endif %}
         </div>
     </div>
+
+    <div id="data-suppression" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajouter cet article</h5>
+                    <button type="button" class="btn btn-dark" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Etes vous sur de vouloir ajouter cet article </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <a href="" class="btn btn-success" id="btnSuppr">Ajouter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('a[data-suppression]').click(function () {
+            var lien = $(this).attr("data-suppression"); // recupère le lien du boutton "poubelle"
+            console.log(lien);
+            var message = $(this).attr("data-message"); // recupère le lien du boutton "poubelle"
+            $("#btnSuppr").attr("href", lien); // on écrit ce lien sur le bouton "supprimer"
+            $(".modal-body").text(message);
+        });
+    </script>
 {% endblock %}

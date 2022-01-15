@@ -18,7 +18,7 @@ class MesArticles
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=Article::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Article::class, cascade={"persist", "remove"})
      */
     private $numArticle;
 

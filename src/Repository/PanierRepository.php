@@ -39,16 +39,4 @@ class PanierRepository extends ServiceEntityRepository
         // returns an array of Product objects
         return $query->getResult();
     }
-
-    /*
-    public function findOneBySomeField($value): ?Commande
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
