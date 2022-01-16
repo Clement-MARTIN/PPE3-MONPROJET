@@ -25,6 +25,24 @@ class ArticleRepository extends ServiceEntityRepository
     /**
      *
      */
+    public function articleMoment(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            "SELECT a
+                    from App\Entity\Article a  
+                    WHERE a.name like :Name"
+            )->setParameter('Name', "%Mo%");
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
+
+
+    /**
+     *
+     */
     public function listDesArticle(UserInterface $user, $id): array
     {
         $entityManager = $this->getEntityManager();

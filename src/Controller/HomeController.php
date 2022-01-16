@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ArticleRepository;
 use App\Repository\CategorieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,13 +13,11 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="homepage")
      */
-    public function recentArticles(CategorieRepository $repo)
+    public function recentArticles(ArticleRepository $repo)
     {
-
-        $cats = $repo->findAll();
-
+        $arts = $repo->articleMoment();
         return $this->render(
-            'home.html.twig'
+            'home.html.twig', ['arts' => $arts]
         );
     }
 }

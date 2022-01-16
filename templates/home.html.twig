@@ -1,22 +1,33 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-     Accueil
+    Accueil
 {% endblock %}
 
 {% block body %}
-    <div class="home">
-        <div class="md-5">
-            <h1 class="display-3" style="text-align: center">Articles du moment</h1>
-        </div>
+    <div class="container mt-2">
+        <h4 class="h4 mt-3">Liste des articles du moment</h4>
+        <div class="row">
+            {% for art in arts %}
+                {% set imagefile = "" %}
 
-        <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-                <h4 class="card-title">Primary card title</h4>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
+                <div class="col-md-3">
+                    <div class="card mb-3">
+                        <div style="padding: 6px">
+                            <a href="{{ path('show_art', {'slug' : art.slug}) }}">
+                                {% for image in art.images|slice(0, 1) %}
+                                    <img src="/uploads/{{ image.name }}" style="max-width: 100%; max-height: 100%">
+                                {% endfor %}
+                            </a>
+                            <a style="color : lightgrey" href="{{ path('show_art', {'slug' : art.slug}) }}">
+                                {{ art.name }}
+                            </a>
+                            <p>{{ art.prix }} €</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
         </div>
     </div>
-    
 {% endblock %}

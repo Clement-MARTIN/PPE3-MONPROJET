@@ -40,7 +40,8 @@ class EditArticleType extends AbstractType
             ->add('quantite', NumberType::class, $this->getConfiguration("La quantité", "La quantité"))
             ->add('origine', TextType::class, $this->getConfiguration("Le pays / région d'origine", "Le nom du pays / région"))
             ->add('idCat', EntityType::class, ['class' => Categorie::class, 'choice_label' => 'name_cat',
-                'label' => "Catérogie de l'article"])
+                'label' => "Catérogie de l'article",
+                'attr' => ['class' => 'form-select']])
             ->add('images', FileType::class, [
                 'label' => 'Sélectionner les images',
                 'multiple' =>true,
