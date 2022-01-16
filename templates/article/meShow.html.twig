@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} - Liste des utilisateurs{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Prix</th>
+                <th scope="col">Frais de port</th>
+                <th scope="col">Quantite</th>
+                <th scope="col">Origine</th>
+                <th scope="col">Artion</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for art in arts %}
+                <tr class="table-secondary">
+                    <td>{{ art.name }}</td>
+                    <td>{{ art.prix }} €</td>
+                    <td>{{ art.fraisDePort }} €</td>
+                    <td>{{ art.quantite }}</td>
+                    <td>{{ art.origine }}</td>
+                    <td><a class='btn btn-primary' href="{{ path('editArticle',{'id':art.id}) }}"><i class="fas fa-pen"></i></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://kit.fontawesome.com/45e38e596f.js" crossorigin="anonymous"></script>
+{% endblock %}

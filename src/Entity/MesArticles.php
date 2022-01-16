@@ -32,6 +32,11 @@ class MesArticles
      */
     private $quantite;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $achat;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class MesArticles
     public function setQuantite(int $quantite): self
     {
         $this->quantite = $quantite;
+
+        return $this;
+    }
+
+    public function getAchat(): ?int
+    {
+        return $this->achat;
+    }
+
+    public function setAchat(int $achat): self
+    {
+        $this->achat = $achat;
 
         return $this;
     }

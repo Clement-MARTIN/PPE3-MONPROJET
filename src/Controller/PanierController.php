@@ -50,13 +50,42 @@ class PanierController extends AbstractController
         $liste->setPanier($pani);
         $liste->setQuantite($article->getQuantite());
         $liste->setNumArticle($article);
+        $liste->setAchat(0);
         $form->handleRequest($request);
         $manager->persist($liste);
 
         $manager->flush();
+        $this->addFlash(
+            'success',
+            "Article ajouté au panier"
+        );
 
         return $this->redirectToRoute('show_art',[
             'slug' => $article->getSlug()
+        ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_ACHETEUR")
+     * @Route("/me/panier/delete/{id}", name="delete_article")
+     */
+    public function deleteAjout($id, Request $request, EntityManagerInterface $manager, MesArticlesRepository $repo): Response
+    {
+        $liste = $repo->findOneById($id);
+        $liste->setAchat(-1);
+        $manager->persist($liste);
+
+        $manager->flush();
+        $this->addFlash(
+            'success',
+            "Article surpprimé du panier"
+        );
+
+        $user = $this->getUser();
+        $panier = $repo->listPanier($user);
+
+        return $this->redirectToRoute('panier',[
+            'panier' => $panier
         ]);
     }
 
@@ -81,12 +110,17 @@ class PanierController extends AbstractController
             $achat = new Achat();
             $form = $this->createForm(NewAchatType::class, $achat);
             $achat->setCommande($commande);
-            $idArticle = $repo->findOneById($pan->getId());
+            $idArticle = $repo->findOneById($pan->getNumArticle());
             $achat->setNumArticle($idArticle);
             $achat->setQuantite( $listeArticle[$i]->getQuantite());
             $form->handleRequest($request);
             $manager->persist($achat);
             $i++;
+        }
+        foreach ($article as $pan){
+            $Articlepanier = $repoA->findOneById($pan->getId());
+            $Articlepanier->setAchat(1);
+            $manager->persist($Articlepanier);
         }
 
         $manager->flush();

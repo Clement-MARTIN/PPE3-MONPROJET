@@ -3,19 +3,23 @@
 namespace App\Controller;
 
 use App\Entity\Images;
+use App\Entity\Search;
 use App\Form\AjoutPanierType;
 use App\Form\EditArticleType;
 use App\Form\InscriptionType;
 use App\Form\NewArticleType;
+use App\Form\PropertySearchType;
 use App\Repository\ImagesRepository;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\From;
 use Doctrine\Persistence\ObjectManager;
 use PDO;
 use App\Entity\Article;
 use App\Entity\Categorie;
 use App\Repository\ArticleRepository;
 use App\Repository\CategorieRepository;
+use phpDocumentor\Reflection\Types\Array_;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,6 +39,32 @@ class ArticleController extends AbstractController
 
         return $this->render('article/base.html.twig', [
             'arts' => $arts, 
+        ]);
+    }
+
+    /**
+     * @Route("/article/search", name="search_article")
+     * @param Request $request
+     */
+    public function base(ArticleRepository $repo, Request $request): Response
+    {
+        $nom = $request->get('nom');
+        $cat = $request->get('cat');
+        $arts = $repo->searchArticle($cat, $nom);
+        return $this->render('article/search.html.twig', ['arts' => $arts]);
+    }
+
+    /**
+     * @IsGranted("ROLE_VENDEUR")
+     * @Route("/me/article", name="mes_article")
+     */
+    public function mesArticles(ArticleRepository $repo): Response
+    {
+        $vendeur = $this->getUser();
+        $arts = $repo->mesArticles($vendeur);
+
+        return $this->render('article/meShow.html.twig', [
+            'arts' => $arts,
         ]);
     }
 
@@ -115,9 +145,9 @@ class ArticleController extends AbstractController
             $entityManager->flush();
             $this->addFlash(
                 'success',
-                "L'annonce a bien été enregistré"
+                "L'article a bien été modifié"
             );
-            return $this->redirectToRoute('base_article');
+            return $this->redirectToRoute('mes_article');
         }
         return $this->render('article/edit.html.twig', [
             'form' => $form->createView(),

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Article;
+use App\Entity\Categorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,6 +35,7 @@ class ArticleRepository extends ServiceEntityRepository
                     inner join App\Entity\MesArticles MesA
                     inner join App\Entity\Panier p
                     WHERE MesA.numArticle = a.id
+                    AND MesA.achat = 0
                     AND MesA.panier = :IDPANIER
                     AND p.user =  :idUSER"
         )->setParameter('idUSER', $user->getId())
@@ -43,32 +45,59 @@ class ArticleRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    // /**
-    //  * @return Article[] Returns an array of Article objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     *
+     */
+    public function mesArticles(UserInterface $user): array
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $entityManager = $this->getEntityManager();
 
-    /*
-    public function findOneBySomeField($value): ?Article
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query = $entityManager->createQuery(
+            "SELECT a
+                    from App\Entity\Article a  
+                    WHERE a.vendeur =  :idUSER"
+        )->setParameter('idUSER', $user->getId());
+
+        // returns an array of Product objects
+        return $query->getResult();
     }
-    */
+
+    public function searchArticle(int $cat, string $name )
+    {
+        if ($cat == 34 && $name == "") {
+            $entityManager = $this->getEntityManager();
+            $query = $entityManager->createQuery(
+                "select a
+                from App\Entity\Article a");
+        }
+
+        if ($cat == 34 && $name != "") {
+            $entityManager = $this->getEntityManager();
+            $query = $entityManager->createQuery(
+                "select a
+                from App\Entity\Article a
+                WHERE a.name like :Name")
+                ->setParameter('Name', "%$name%");
+        }
+
+        if ($cat < 34 && $name == "") {
+            $entityManager = $this->getEntityManager();
+            $query = $entityManager->createQuery(
+                "select a
+                from App\Entity\Article a
+                where a.idCat = :idCAT")
+                ->setParameter('idCAT', $cat);
+        }
+        if ($cat < 34 && $name != "") {
+            $entityManager = $this->getEntityManager();
+            $query = $entityManager->createQuery(
+                "select a
+                from App\Entity\Article a
+                where a.idCat = :idCAT
+                AND a.name like :Name")
+                ->setParameter('idCAT', $cat)
+                ->setParameter('Name', "%$name%");
+        }
+        return $query->getResult();
+    }
 }

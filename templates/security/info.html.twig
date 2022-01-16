@@ -36,26 +36,10 @@
                         {% endif %}
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-3">
-                                    {% if is_granted('ROLE_ACHETEUR') %}
-                                        <img src="/images-type/acheteur.png" style="width: 100%">
-                                    {% endif %}
-                                    {% if is_granted('ROLE_VENDEUR') %}
-                                        <img src="/images-type/vendeur.png" style="width: 100%">
-                                    {% endif %}
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                        <img src="/images-type/admin.png" style="width: 100%">
-                                    {% endif %}
-                                </div>
-                                {% if is_granted('ROLE_VENDEUR') %}
-                                    <div class="col-md-9">
-                                        <h4>Vendeur :</h4>
-                                        <p>Vous êtes vendeur, vous pouvez <strong><u>uniquement</u></strong> vendre des
-                                            articles
-                                            en tous genres, au prix souhaité, le site prend une commission de 5%."</p>
-                                    </div>
-                                {% endif %}
                                 {% if is_granted('ROLE_ACHETEUR') %}
+                                    <div class="col-md-3">
+                                        <img src="/images-type/acheteur.png" style="width: 100%">
+                                    </div>
                                     <div class="col-md-9">
                                         <h4>Acheteur :</h4>
                                         <p>Vous êtes, acheteur vous pouvez <strong><u>uniquement</u></strong> acheter
@@ -63,7 +47,21 @@
                                             disponibles en vente.</p>
                                     </div>
                                 {% endif %}
+                                {% if is_granted('ROLE_VENDEUR') %}
+                                    <div class="col-md-3">
+                                        <img src="/images-type/vendeur.png" style="width: 100%">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <h4>Vendeur :</h4>
+                                        <p>Vous êtes vendeur, vous pouvez <strong><u>uniquement</u></strong> vendre des
+                                            articles
+                                            en tous genres, au prix souhaité, le site prend une commission de 5%."</p>
+                                    </div>
+                                {% endif %}
                                 {% if is_granted('ROLE_ADMIN') %}
+                                    <div class="col-md-3">
+                                        <img src="/images-type/admin.png" style="width: 100%">
+                                    </div>
                                     <div class="col-md-9">
                                         <h4>Admin :</h4>
                                         <p>Vous êtes, adminsitrateur vous pouvez avoir accès à la liste de tous les

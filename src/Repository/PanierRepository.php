@@ -33,6 +33,7 @@ class PanierRepository extends ServiceEntityRepository
                     inner join App\Entity\Panier p
                     WHERE p.id = a.panier
                     AND p.user =  :idUSER
+                    AND a.achat = 0
                     ORDER BY a.numArticle"
         )->setParameter('idUSER', $user->getId());
 
