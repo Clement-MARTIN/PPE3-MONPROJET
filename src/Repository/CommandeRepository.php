@@ -20,36 +20,4 @@ class CommandeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Commande::class);
     }
-
-    /**
-     *
-     */
-    public function listCommande(UserInterface $user): array
-    {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            "SELECT com.date_commande, a
-                    from App\Entity\Commande com
-                    inner join App\Entity\Achat a
-                    WHERE com.id = a.commande
-                    AND com.isUser =  :idUSER
-                    ORDER BY com.date_commande DESC"
-        )->setParameter('idUSER', $user->getId());
-
-        // returns an array of Product objects
-        return $query->getResult();
-    }
-
-    /*
-    public function findOneBySomeField($value): ?Commande
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

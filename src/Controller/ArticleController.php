@@ -163,11 +163,8 @@ class ArticleController extends AbstractController
      */
     public function show(Article $art): Response
     {
-        $form = $this->createForm(AjoutPanierType::class);
-
         return $this->render('article/showArt.html.twig',[
             'art' => $art,
-            'form' => $form->createView()
         ]);
     }
 

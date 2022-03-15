@@ -15,5 +15,12 @@
       <jdbc-url>jdbc:mariadb://serverbtssiojv.ddns.net:3306/martin_ppe3-pro</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="martin_ppe3-pro@serverbtssiojv.ddns.net" uuid="893e3546-5559-4154-bb98-079d97c257a6">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://serverbtssiojv.ddns.net:3306/martin_ppe3-pro</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

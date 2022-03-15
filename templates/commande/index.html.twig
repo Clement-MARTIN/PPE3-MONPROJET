@@ -7,66 +7,40 @@
         <div class="row ">
             {% if coms != null %}
                 {% set date = null %}
-                {% set total = 0 %}
                 {% for com in coms %}
-                    {% set numMois = com.date_commande|date("m") %}
+                    {% set index = 0 %}
+                    {% set total = 0 %}
+                    {% set numMois = com.date|date("m") %}
                     {% set mois =  moisList[ numMois|number_format - 1] %}
-                    {% if date != com.date_commande|date("d - m - Y") %}
-                        {% if date != null %}
-                            <div class="row">
-                                <div class="col-md-10">
+                    <div class="card mb-3 p-3">
+                        <div class="row">
+                            <h5 class="h5">Commande faite le : {{ com.date|date("d") }} {{ mois }} {{ com.date|date("Y") }}</h5>
+                            {% for article in com['article'] %}
+                                <div class="col-md-6">
+                                    <p style="margin-bottom: 0 !important; margin-left: 3%">{{ article.name }}</p>
                                 </div>
                                 <div class="col-md-2">
-                                    <div class="m-1" style="margin-right: 3%;">Prix total : &nbsp;<div class="btn btn-outline-success" style="padding:0.1rem 0.5rem;" >{{ total }} €</div></div>
+                                    <div class="m-1" style="margin-right: 3%;">Prix unité : &nbsp;<div class="btn btn-outline-light" style="padding:0.1rem 0.5rem;" >{{ article.prix }} €</div></div>
                                 </div>
+                                <div class="col-md-2">
+                                    <div class="m-1" style="margin-right: 3%;">Frais de port: &nbsp;<div class="btn btn-outline-warning" style="padding:0.1rem 0.5rem;" >{{ article.fraisDePort }} €</div></div>
+                                </div>
+                                <div class="col-md-2" style="margin-bottom: 0 !important; ">
+                                    <div class="m-1" style="margin-right: 3%;">Quantité : &nbsp;<div class="btn btn btn-outline-info" style="padding:0.1rem 0.5rem;" >{{ com['quantite'][index] }}</div></div>
+                                </div>
+                                {% set total = total + article.fraisDePort + article.prix * com['quantite'][index] %}
+                                {% set index = index + 1%}
+                            {% endfor %}
+                            <div class="col-md-10">
                             </div>
-                        {% endif %}
-                        {% set total = com.0.numArticle.prix * com.0.quantite + com.0.numArticle.fraisDePort %}
+                            <div class="col-md-2">
+                                <div class="m-1" style="margin-right: 3%;">Prix total : &nbsp;<div class="btn btn-outline-success" style="padding:0.1rem 0.5rem;" >{{ total }} €</div></div>
+                            </div>
                         </div>
-                        <div class="card mb-3 p-3">
-                            <div class="row">
-                                <h5 class="h5">Commande faite le : {{ com.date_commande|date("d") }} {{ mois }} {{ com.date_commande|date("Y") }}</h5>
-                                <div class="col-md-6">
-                                    <p style="margin-bottom: 0 !important; margin-left: 3%">{{ com.0.numArticle.name }}</p>
-                                </div>
-                                <div class="col-md-2" style="margin-bottom: 0 !important; ">
-                                    <div class="m-1" style="margin-right: 3%;">Quantité : &nbsp;<div class="btn btn btn-outline-info" style="padding:0.1rem 0.5rem;" >{{ com.0.quantite }}</div></div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="m-1" style="margin-right: 3%;">Prix unité : &nbsp;<div class="btn btn-outline-light" style="padding:0.1rem 0.5rem;" >{{ com.0.numArticle.prix }} €</div></div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="m-1" style="margin-right: 3%;">Frais de port: &nbsp;<div class="btn btn-outline-warning" style="padding:0.1rem 0.5rem;" >{{ com.0.numArticle.fraisDePort }} €</div></div>
-                                </div>
-                            </div>
-                        {% else %}
-                            {% set total = total + com.0.numArticle.prix * com.0.quantite + com.0.numArticle.fraisDePort %}
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <p style="margin-bottom: 0 !important; margin-left: 3%">{{ com.0.numArticle.name }}</p>
-                                </div>
-                                <div class="col-md-2" style="margin-bottom: 0 !important; ">
-                                    <div class="m-1" style="margin-right: 3%;">Quantité : &nbsp;<div class="btn btn btn-outline-info" style="padding:0.1rem 0.5rem;" >{{ com.0.quantite }}</div></div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="m-1" style="margin-right: 3%;">Prix unité : &nbsp;<div class="btn btn-outline-light" style="padding:0.1rem 0.5rem;" >{{ com.0.numArticle.prix }} €</div></div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="m-1" style="margin-right: 3%;">Frais de port: &nbsp;<div class="btn btn-outline-warning" style="padding:0.1rem 0.5rem;" >{{ com.0.numArticle.fraisDePort }} €</div></div>
-                                </div>
-                            </div>
-                        {% endif %}
-                        {% set date = com.date_commande|date("d - m - Y") %}
-                    {% endfor %}
-                <div class="row">
-                    <div class="col-md-10">
                     </div>
-                    <div class="col-md-2">
-                        <div class="m-1" style="margin-right: 3%;">Prix total : &nbsp;<div class="btn btn-outline-success" style="padding:0.1rem 0.5rem;" >{{ total }} €</div></div>
-                    </div>
-                </div>
-                {% else %}
-                    <h2 class="mt-3">Vous n'avez aucune commande</h2>
+                {% endfor %}
+            {% else %}
+                <h2 class="mt-3">Vous n'avez aucune commande</h2>
             {% endif %}
         </div>
     </div>

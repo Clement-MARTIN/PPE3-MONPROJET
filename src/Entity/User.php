@@ -68,11 +68,6 @@ class User implements UserInterface
     private $commandes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Achat::class, mappedBy="idAchateur")
-     */
-    private $achats;
-
-    /**
      * @ORM\OneToMany(targetEntity=Article::class, mappedBy="vendeur")
      */
     private $articles;
@@ -267,36 +262,6 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($commande->getIsUser() === $this) {
                 $commande->setIsUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Achat[]
-     */
-    public function getAchats(): Collection
-    {
-        return $this->achats;
-    }
-
-    public function addAchat(Achat $achat): self
-    {
-        if (!$this->achats->contains($achat)) {
-            $this->achats[] = $achat;
-            $achat->setIdAchateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAchat(Achat $achat): self
-    {
-        if ($this->achats->removeElement($achat)) {
-            // set the owning side to null (unless already changed)
-            if ($achat->getIdAchateur() === $this) {
-                $achat->setIdAchateur(null);
             }
         }
 

@@ -25,11 +25,6 @@ class Commande
     private $date_commande;
 
     /**
-     * @ORM\OneToMany(targetEntity=Achat::class, mappedBy="commande")
-     */
-    private $idAchat;
-
-    /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="commande")
      */
     private $idUSER;
@@ -38,6 +33,16 @@ class Commande
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="commandes")
      */
     private $isUser;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $Articles = [];
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $Quantite = [];
 
     public function __construct()
     {
@@ -130,6 +135,30 @@ class Commande
     public function setIsUser(?user $isUser): self
     {
         $this->isUser = $isUser;
+
+        return $this;
+    }
+
+    public function getArticles(): ?array
+    {
+        return $this->Articles;
+    }
+
+    public function setArticles(array $Articles): self
+    {
+        $this->Articles = $Articles;
+
+        return $this;
+    }
+
+    public function getQuantite(): ?array
+    {
+        return $this->Quantite;
+    }
+
+    public function setQuantite(array $Quantite): self
+    {
+        $this->Quantite = $Quantite;
 
         return $this;
     }

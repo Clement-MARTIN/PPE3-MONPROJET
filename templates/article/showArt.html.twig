@@ -55,16 +55,14 @@
             </div>
             {% if is_granted('ROLE_ACHETEUR') %}
                 {% if art.quantite != 0 %}
-                    <div class="col-md-8">
-                    </div>
-                    <div class="col-md-4">
-                        <a href='#data-suppression' data-toggle='modal'
-                           data-message='Voulez vous ajouter cet article ?'
-                           data-suppression="{{ path('ajout_article',{'id' : art.id}) }}" class='btn btn-success'>
-                            <img src="https://img.icons8.com/color/50/000000/shopping-basket.png"/> Ajouteur au panier
-                        </a>
-
-                    </div>
+                        <div class="col-md-8">
+                        </div>
+                        <div class="col-md-4">
+                            <form id="addPanier" name="formRecherche" action="{{ path('ajout_article',{'id' : art.id}) }}" method="post">
+                                <input type="number" id="quant" name="quant" min="1" max="{{ art.quantite }}">
+                                <button type="submit" class="btn btn-success btn-block"><img src="https://img.icons8.com/color/50/000000/shopping-basket.png"/> Ajouteur au panier</button>
+                            </form>
+                        </div>
                 {% endif %}
             {% endif %}
         </div>

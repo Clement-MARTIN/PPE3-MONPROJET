@@ -93,11 +93,6 @@ class SecurityController extends AbstractController
             $password = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
             $manager->persist($user);
-            $panier = new Panier();
-            $form = $this->createForm(PanierType::class, $panier);
-            $panier->setUser($user);
-            $form->handleRequest($request);
-            $manager->persist($panier);
             $manager->flush();
             $this->addFlash(
                 'success',
